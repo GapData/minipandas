@@ -19,3 +19,7 @@ class BlockManager:
         if not all(isinstance(block, Block) for block in blocks):
             raise TypeError('blocks must be a tuple of Block elements')
         self.blocks = blocks
+
+
+class SingleBlockManager(BlockManager):
+    pass
