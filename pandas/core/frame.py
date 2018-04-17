@@ -36,7 +36,7 @@ def _arrays_to_mgr(arrays, arr_names, index, columns, dtype=None):
         index = extract_index(arrays)
 
     arrays = _homogenize(arrays, index, dtype)
-    axes = [_ensure_index(columns), _ensure_index(index)]
+    axes = (_ensure_index(columns), _ensure_index(index))
     return pandas.core.internals.create_block_manager_from_arrays(arrays,
                                                                   arr_names,
                                                                   axes)
