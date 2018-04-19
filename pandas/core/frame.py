@@ -1,5 +1,6 @@
 import pandas.core
 
+from pandas.core.indexes.base import _ensure_index
 
 def extract_index(data):
     """Extract the index from the data, or return a default index.
@@ -17,7 +18,7 @@ def extract_index(data):
         elif len(column) != column_length:
             raise ValueError('All columns must have the same size')
 
-    return pandas.core.index.RangeIndex(0, column_length, name=None)
+    return pandas.core.indexes.RangeIndex(0, column_length, name=None)
 
 
 def _homogenize(data, index, dtype=None):
@@ -35,7 +36,7 @@ def _arrays_to_mgr(arrays, arr_names, index, columns, dtype=None):
         index = extract_index(arrays)
 
     arrays = _homogenize(arrays, index, dtype)
-    axes = [_ensure_index(columns), _ensure_index(index)]
+    axes = (_ensure_index(columns), _ensure_index(index))
     return pandas.core.internals.create_block_manager_from_arrays(arrays,
                                                                   arr_names,
                                                                   axes)
@@ -53,6 +54,6 @@ class DataFrame(pandas.core.generic.NDFrame):
 
     def _init_dict(self, data, index, columns, dtype=None):
         keys = pandas.core.common._dict_keys_to_ordered_list(data)
-        columns = data_names = pandas.core.index.Index(keys)
+        columns = data_names = pandas.core.indexes.Index(keys)
         arrays = [data[k] for k in keys]
         return _arrays_to_mgr(arrays, data_names, index, columns, dtype=dtype)

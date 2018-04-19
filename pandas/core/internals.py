@@ -1,7 +1,7 @@
 import collections
 import itertools
 import numpy
-
+from pandas.core.dtypes.generic import ABCSeries
 
 class Block:
     def __init__(self, values, placement, ndim=None):
@@ -126,7 +126,7 @@ def create_block_manager_from_arrays(arrays, names, axes):
     """
     Create a BlockManager object from a list of arrays.
     """
-    blocks = form_blocks(arrays, names, axes)
+    blocks = tuple(form_blocks(arrays, names, axes))
     mgr = BlockManager(blocks, axes)
     mgr._consolidate_inplace()
     return mgr
